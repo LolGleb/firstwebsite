@@ -8,24 +8,42 @@ use App\Http\Controllers\VerbController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('words.index');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Home route
+Route::redirect('/', '/words')->name('home');
+
+// Group routes with common prefix and name
+Route::group(['prefix' => 'words', 'as' => 'words.'], function () {
+    Route::get('/', [WordController::class, 'index'])->name('index');
+    Route::post('/check', [WordController::class, 'check'])->name('check');
 });
 
-Route::get('/words', [WordController::class, 'index'])->name('words.index');
-Route::post('/words/check', [WordController::class, 'check'])->name('words.check');
+Route::group(['prefix' => 'sentences', 'as' => 'sentence.'], function () {
+    Route::get('/', [SentenceController::class, 'index'])->name('index');
+    Route::post('/check', [SentenceController::class, 'check'])->name('check');
+});
 
-Route::get('/sentences', [SentenceController::class, 'index'])->name('sentence.index');
-Route::post('/sentences/check', [SentenceController::class, 'check'])->name('sentence.check');
+Route::group(['prefix' => 'grammar', 'as' => 'grammar.'], function () {
+    Route::get('/', [GrammarExerciseController::class, 'index'])->name('index');
+    Route::post('/check', [GrammarExerciseController::class, 'check'])->name('check');
+});
 
-Route::get('/grammar', [GrammarExerciseController::class, 'index'])->name('grammar.index');
-Route::post('/grammar/check', [GrammarExerciseController::class, 'check'])->name('grammar.check');
+Route::group(['prefix' => 'conjugation', 'as' => 'conjugation.'], function () {
+    Route::get('/', [ConjugationExerciseController::class, 'index'])->name('index');
+    Route::post('/check', [ConjugationExerciseController::class, 'check'])->name('check');
+});
 
-Route::get('/conjugation', [ConjugationExerciseController::class, 'index'])->name('conjugation.index');
-Route::post('/conjugation/check', [ConjugationExerciseController::class, 'check'])->name('conjugation.check');
+Route::group(['prefix' => 'verbs', 'as' => 'verbs.'], function () {
+    Route::get('/', [VerbController::class, 'index'])->name('index');
+    Route::post('/check', [VerbController::class, 'check'])->name('check');
+});
 
-Route::get('/verbs', [VerbController::class, 'index'])->name('verbs.index');
-Route::post('/verbs/check', [VerbController::class, 'check'])->name('verbs.check');
-
-Route::get('/audio', [AudioExerciseController::class, 'index'])->name('audio.index');
-Route::post('/audio/check', [AudioExerciseController::class, 'check'])->name('audio.check');
+Route::group(['prefix' => 'audio', 'as' => 'audio.'], function () {
+    Route::get('/', [AudioExerciseController::class, 'index'])->name('index');
+    Route::post('/check', [AudioExerciseController::class, 'check'])->name('check');
+});
